@@ -13,6 +13,7 @@ import { CardComponent } from '../../ui/card/card.component';
     <app-card
       [list]="cities()"
       [backgroundColor]="backgroundColor"
+      [nameKey]="nameKey"
       (onAddNewItem)="addNewItem()"
       (onDeleteItem)="deleteItem($event)">
       <img ngSrc="assets/img/city.png" width="200" height="200" />
@@ -27,6 +28,7 @@ export class CityCardComponent {
 
   cities = this.store.cities;
   backgroundColor = 'rgba(0, 0, 250, 0.1)';
+  nameKey = 'name';
 
   ngOnInit(): void {
     this.http.fetchCities$.subscribe((c) => this.store.addAll(c));

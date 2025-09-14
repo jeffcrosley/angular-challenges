@@ -17,7 +17,7 @@ import { Component, input, output } from '@angular/core';
 
       <ng-template #listItem let-item>
         <div class="border-grey-300 flex justify-between border px-2 py-1">
-          {{ item.firstName }}
+          {{ item[nameKey()] }}
           <button (click)="onDeleteItem.emit(item.id)">
             <img class="h-5" src="assets/svg/trash.svg" />
           </button>
@@ -34,9 +34,10 @@ import { Component, input, output } from '@angular/core';
   imports: [NgTemplateOutlet],
 })
 export class CardComponent {
-  onAddNewItem = output<void>();
-  onDeleteItem = output<number>();
-
   readonly list = input<any[] | null>(null);
   readonly backgroundColor = input('');
+  readonly nameKey = input<string>('firstName');
+
+  onAddNewItem = output<void>();
+  onDeleteItem = output<number>();
 }
