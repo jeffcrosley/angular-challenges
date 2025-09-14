@@ -1,36 +1,39 @@
-import { IsAuthorizedGuard } from '@angular-challenges/module-to-standalone/admin/shared';
 import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: 'home',
-    loadChildren: () =>
+    loadComponent: () =>
       import('@angular-challenges/module-to-standalone/home').then(
-        (m) => m.ModuleToStandaloneHomeModule,
+        (m) => m.HomeComponent,
       ),
+    // loadChildren: () =>
+    //   import('@angular-challenges/module-to-standalone/home').then(
+    //     (m) => m.ModuleToStandaloneHomeModule,
+    //   ),
   },
-  {
-    path: 'admin',
-    canActivate: [IsAuthorizedGuard],
-    loadChildren: () =>
-      import('@angular-challenges/module-to-standalone/admin/feature').then(
-        (m) => m.AdminFeatureModule,
-      ),
-  },
-  {
-    path: 'user',
-    loadChildren: () =>
-      import('@angular-challenges/module-to-standalone/user/shell').then(
-        (m) => m.UserShellModule,
-      ),
-  },
+  // {
+  //   path: 'admin',
+  //   canActivate: [IsAuthorizedGuard],
+  //   loadChildren: () =>
+  //     import('@angular-challenges/module-to-standalone/admin/feature').then(
+  //       (m) => m.AdminFeatureModule,
+  //     ),
+  // },
+  // {
+  //   path: 'user',
+  //   loadChildren: () =>
+  //     import('@angular-challenges/module-to-standalone/user/shell').then(
+  //       (m) => m.UserShellModule,
+  //     ),
+  // },
 
-  {
-    path: 'forbidden',
-    loadChildren: () =>
-      import('@angular-challenges/module-to-standalone/forbidden').then(
-        (m) => m.ForbiddenModule,
-      ),
-  },
+  // {
+  //   path: 'forbidden',
+  //   loadChildren: () =>
+  //     import('@angular-challenges/module-to-standalone/forbidden').then(
+  //       (m) => m.ForbiddenModule,
+  //     ),
+  // },
 ];
