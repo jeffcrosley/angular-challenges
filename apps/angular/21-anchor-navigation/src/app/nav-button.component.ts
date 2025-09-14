@@ -1,10 +1,10 @@
 /* eslint-disable @angular-eslint/component-selector */
-import { Component, input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nav-button',
   template: `
-    <a [href]="href()">
+    <a>
       <ng-content />
     </a>
   `,
@@ -12,6 +12,4 @@ import { Component, input } from '@angular/core';
     class: 'block w-fit border border-red-500 rounded-md p-4 m-2',
   },
 })
-export class NavButtonComponent {
-  href = input('');
-}
+export class NavButtonComponent {}
