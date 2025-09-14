@@ -1,49 +1,51 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
-import { randText } from '@ngneat/falso';
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ToDo } from './app.interface';
+import { AppService } from './app.service';
 
 @Component({
-  imports: [],
+  imports: [MatProgressSpinnerModule, CommonModule],
   selector: 'app-root',
   template: `
-    @for (todo of todos; track todo.id) {
+    <mat-progress-spinner
+      *ngIf="!todos().length || loading()"
+      mode="indeterminate" />
+    @for (todo of todos(); track todo.id) {
       {{ todo.title }}
       <button (click)="update(todo)">Update</button>
+      <button (click)="delete(todo.id)">Delete</button>
     }
   `,
-  styles: [],
 })
 export class AppComponent implements OnInit {
-  private http = inject(HttpClient);
-
-  todos!: any[];
+  private appService = inject(AppService);
+  todos = signal<ToDo[]>([]);
+  loading = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.http
-      .get<any[]>('https://jsonplaceholder.typicode.com/todos')
-      .subscribe((todos) => {
-        this.todos = todos;
-      });
+    this.getToDos();
   }
 
-  update(todo: any) {
-    this.http
-      .put<any>(
-        `https://jsonplaceholder.typicode.com/todos/${todo.id}`,
-        JSON.stringify({
-          todo: todo.id,
-          title: randText(),
-          body: todo.body,
-          userId: todo.userId,
-        }),
-        {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          },
-        },
-      )
-      .subscribe((todoUpdated: any) => {
-        this.todos[todoUpdated.id - 1] = todoUpdated;
-      });
-  }
+  private getToDos = async () => {
+    this.loading.set(true);
+    this.todos.set(await this.appService.getToDos());
+    this.loading.set(false);
+  };
+
+  update = async (todo: ToDo) => {
+    this.loading.set(true);
+    const todoUpdated = await this.appService.updateToDo(todo);
+    this.todos.update((todos) =>
+      todos.map((t) => (t.id === todoUpdated.id ? todoUpdated : t)),
+    );
+    this.loading.set(false);
+  };
+
+  delete = async (id: number) => {
+    this.loading.set(true);
+    await this.appService.deleteToDo(id);
+    this.todos.update((todos) => todos.filter((t) => t.id !== id));
+    this.loading.set(false);
+  };
 }
