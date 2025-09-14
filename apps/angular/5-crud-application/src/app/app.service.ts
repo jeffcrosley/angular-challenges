@@ -23,4 +23,7 @@ export class AppService {
         userId: todo.userId,
       }),
     );
+
+  deleteToDo = (id: number): Promise<void> =>
+    firstValueFrom(this.http.delete<void>(`${this.url}/${id}`));
 }
