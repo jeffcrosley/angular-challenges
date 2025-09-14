@@ -17,19 +17,12 @@ import { CardComponent } from '../../ui/card/card.component';
   template: `
     <app-card
       [list]="students()"
+      [backgroundColor]="backgroundColor"
       (onAddNewItem)="addNewItem()"
-      (onDeleteItem)="deleteItem($event)"
-      customClass="bg-light-green">
+      (onDeleteItem)="deleteItem($event)">
       <img ngSrc="assets/img/student.webp" width="200" height="200" />
     </app-card>
   `,
-  styles: [
-    `
-      ::ng-deep .bg-light-green {
-        background-color: rgba(0, 250, 0, 0.1);
-      }
-    `,
-  ],
   imports: [CardComponent, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -38,6 +31,7 @@ export class StudentCardComponent implements OnInit {
   private store = inject(StudentStore);
 
   students = this.store.students;
+  backgroundColor = 'rgba(0, 250, 0, 0.1)';
 
   ngOnInit(): void {
     this.http.fetchStudents$.subscribe((s) => this.store.addAll(s));

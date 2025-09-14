@@ -6,7 +6,7 @@ import { Component, input, output } from '@angular/core';
   template: `
     <div
       class="flex w-fit flex-col gap-3 rounded-md border-2 border-black p-4"
-      [class]="customClass()">
+      [style.backgroundColor]="backgroundColor()">
       <ng-content />
       <section>
         @for (item of list(); track item) {
@@ -38,5 +38,5 @@ export class CardComponent {
   onDeleteItem = output<number>();
 
   readonly list = input<any[] | null>(null);
-  readonly customClass = input('');
+  readonly backgroundColor = input('');
 }
