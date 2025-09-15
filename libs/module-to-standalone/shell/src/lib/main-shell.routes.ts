@@ -38,11 +38,11 @@ export const appRoutes: Route[] = [
   //     ),
   // },
 
-  // {
-  //   path: 'forbidden',
-  //   loadChildren: () =>
-  //     import('@angular-challenges/module-to-standalone/forbidden').then(
-  //       (m) => m.ForbiddenModule,
-  //     ),
-  // },
+  {
+    path: 'forbidden',
+    loadComponent: () =>
+      import('@angular-challenges/module-to-standalone/forbidden').then(
+        (c) => c.ForbiddenComponent,
+      ),
+  },
 ];
