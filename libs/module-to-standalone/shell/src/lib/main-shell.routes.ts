@@ -1,3 +1,4 @@
+import { IsAuthorizedGuard } from '@angular-challenges/module-to-standalone/admin/shared';
 import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
@@ -6,21 +7,29 @@ export const appRoutes: Route[] = [
     path: 'home',
     loadComponent: () =>
       import('@angular-challenges/module-to-standalone/home').then(
-        (m) => m.HomeComponent,
+        (c) => c.HomeComponent,
       ),
-    // loadChildren: () =>
-    //   import('@angular-challenges/module-to-standalone/home').then(
-    //     (m) => m.ModuleToStandaloneHomeModule,
-    //   ),
   },
-  // {
-  //   path: 'admin',
-  //   canActivate: [IsAuthorizedGuard],
-  //   loadChildren: () =>
-  //     import('@angular-challenges/module-to-standalone/admin/feature').then(
-  //       (m) => m.AdminFeatureModule,
-  //     ),
-  // },
+  {
+    path: 'admin',
+    canActivate: [IsAuthorizedGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('@angular-challenges/module-to-standalone/admin/feature').then(
+            (c) => c.DashboardComponent,
+          ),
+      },
+      {
+        path: 'create-user',
+        loadComponent: () =>
+          import('@angular-challenges/module-to-standalone/admin/feature').then(
+            (c) => c.CreateUserComponent,
+          ),
+      },
+    ],
+  },
   // {
   //   path: 'user',
   //   loadChildren: () =>
